@@ -1,0 +1,89 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "pet-server",
+    "collectionId": "2bab554a-351e-4f4e-adaa-61cf416eb050",
+    "dateExported": "2024-10-03T11:48:39.251Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "60a15cad-5859-4536-9e7f-4a21860ffbf6",
+            "colId": "2bab554a-351e-4f4e-adaa-61cf416eb050",
+            "containerId": "",
+            "name": "profile",
+            "url": "",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-10-03T11:26:09.925Z",
+            "modified": "2024-10-03T11:26:09.925Z",
+            "headers": []
+        },
+        {
+            "_id": "0781c152-2902-4f3e-838b-61a4fc15a25f",
+            "colId": "2bab554a-351e-4f4e-adaa-61cf416eb050",
+            "containerId": "",
+            "name": "post",
+            "url": "http://localhost:5000/api/posts/66fe7db5bd61d443619d3ef7",
+            "method": "PATCH",
+            "sortNum": 20000,
+            "created": "2024-10-03T11:26:16.184Z",
+            "modified": "2024-10-03T11:44:27.345Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"description\": \"<p>amar sonar bangla edited</p>\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "f925ce68-2602-4ccd-8145-1a8d43187472",
+            "colId": "2bab554a-351e-4f4e-adaa-61cf416eb050",
+            "containerId": "",
+            "name": "post",
+            "url": "http://localhost:5000/api/posts",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-10-03T11:26:36.978Z",
+            "modified": "2024-10-03T11:26:36.978Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImVtYWlsIjoidGVzdEBlbWFpbC5jb20iLCJpYXQiOjE3Mjc5NDE0MTd9.C2UaMzvbS4WKUMwB2N5sKHVHP5ALk7_NyFioZ3rmCDk"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"description\": \"<p>amar sonar bangla</p>\",\n  \"category\": \"tip\",\n  \"type\": \"regular\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "12fad4c6-1139-44b2-84a6-f01738b29067",
+            "colId": "2bab554a-351e-4f4e-adaa-61cf416eb050",
+            "containerId": "",
+            "name": "post user",
+            "url": "http://localhost:5000/api/users/me",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-10-03T11:26:51.604Z",
+            "modified": "2024-10-03T11:26:51.604Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImVtYWlsIjoidGVzdEBlbWFpbC5jb20iLCJpYXQiOjE3Mjc5NDE0MTd9.C2UaMzvbS4WKUMwB2N5sKHVHP5ALk7_NyFioZ3rmCDk"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"profile_picture\": \"https://i.ibb.co.com/Jj0XZtr/index.jpg\"\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "Z90yNxabROmvFwKDVUYjl2QAHyM8pPPSPiLV_x8jZGTVocBkoW2F2ZJZPO5E03kJ8X1Cp3tWeJLDFB-pECO-3A"
+}
