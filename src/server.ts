@@ -1,5 +1,5 @@
 import app from './app';
-// import config from './app/config';
+import config from './app/config';
 import mongoose from 'mongoose';
 import { Server } from 'http';
 
@@ -8,10 +8,10 @@ main().catch((err) => console.log(err));
 
 async function main() {
   try {
-    await mongoose.connect("mongodb://localhost:27017");
+    await mongoose.connect(config.database_url as string);
 
-    server = app.listen(5000, () => {
-      console.log(`Pet care server is listening on port ${5000}`);
+    server = app.listen(config.port, () => {
+      console.log(`Pet care server is listening on port ${config.port}`);
     });
   } catch (error) {
     console.log({

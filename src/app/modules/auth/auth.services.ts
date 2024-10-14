@@ -41,8 +41,8 @@ const sendLinkToEmail = async (payload: TChangePassword) => {
 
   // create access token to send to the client
   const jwtPayload = {
-    userId: user.id,
     role: user.role,
+    email: user.email,
   };
 
   const accessToken = jwt.sign(
@@ -53,13 +53,15 @@ const sendLinkToEmail = async (payload: TChangePassword) => {
     },
   );
 
-  const resetLink = `http://localhost:3000?id=${user._id}&token=${accessToken}`;
+  const resetLink = `http://localhost:3000/reset-password?id=${user._id}&token=${accessToken}`;
   sendEmail(user.email, resetLink);
 };
 
-const setForgottenPasswordIntoDB = async (userId: string, payload: TChangePassword) => {
+const setForgottenPasswordIntoDB = async (useremail: string, payload: TChangePassword) => {
   //  check if user exists
-  const user = await User.findById(userId).select('+password');
+  console.log(useremail)
+  const user = await User.findOne({email: useremail}).select('+password');
+  console.log(user)
   if (!user) {
     throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
   }

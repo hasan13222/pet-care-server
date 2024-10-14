@@ -5,6 +5,6 @@ export const POST_TYPE = {
 
   export const POST_CATEGORY = {
     tip: 'tip',
-    category: 'category',
+    story: 'story',
   } as const;
   

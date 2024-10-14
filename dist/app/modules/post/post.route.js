@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PostRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const post_controller_1 = require("./post.controller");
+const auth_1 = require("../../middleware/auth");
+const validateRequest_1 = require("../../middleware/validateRequest");
+const post_validation_1 = require("./post.validation");
+const router = express_1.default.Router();
+router.get('/my-post', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.getMyPosts);
+router.get('/:userId', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.getUserPosts);
+router.get('/', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.getAllPosts);
+router.post('/', (0, auth_1.verifyToken)(), (0, validateRequest_1.validateRequest)(post_validation_1.PostValidations.createPostValidationSchema), post_controller_1.PostControllers.createPost);
+router.patch('/:id', (0, auth_1.verifyToken)(), (0, validateRequest_1.validateRequest)(post_validation_1.PostValidations.updatePostValidationSchema), post_controller_1.PostControllers.updatePost);
+router.patch('/:id/interact', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.interactPost);
+router.patch('/:id/payment', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.paymentForPremiumPost);
+router.delete('/:id', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.deletePost);
+exports.PostRoutes = router;

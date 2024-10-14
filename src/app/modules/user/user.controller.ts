@@ -13,6 +13,16 @@ const getUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getOtherUser = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.params.userId;
+  const result = await UserServices.getOtherUserFromDB(userId);
+  sendResponse(res, {
+    status: StatusCodes.OK,
+    message: 'User Profile retrieved successfully',
+    data: result,
+  });
+});
+
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
   const result = await UserServices.getAllUserFromDB();
   sendResponse(res, {
@@ -52,10 +62,35 @@ const promoteUser = () =>
     });
   });
 
+const followUser = () =>
+  catchAsync(async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const result = await UserServices.followUserIntoDB(userId, req.body);
+    sendResponse(res, {
+      status: StatusCodes.OK,
+      message: 'User Promoted successfully',
+      data: result,
+    });
+  });
+
+  const unfollowUser = () =>
+  catchAsync(async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const result = await UserServices.unfollowUserIntoDB(userId, req.body);
+    sendResponse(res, {
+      status: StatusCodes.OK,
+      message: 'User Promoted successfully',
+      data: result,
+    });
+  });
+
 export const UserControllers = {
   getUser,
   updateUser,
   getAllUser,
   deleteUser,
-  promoteUser
+  promoteUser,
+  getOtherUser,
+  followUser,
+  unfollowUser
 };

@@ -7,22 +7,26 @@ const commentSchema = new Schema<TPostComment>(
     userId: {
       type: Schema.Types.ObjectId,
       required: true,
+      ref: 'User',
     },
     comment: {
       type: String,
       required: true,
-    }
-  }
-)
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
 const postSchema = new Schema<TPost>(
   {
     user: {
+      required: true,
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
     description: {
       type: String,
-      required: true,
     },
     category: {
       type: String,
@@ -43,8 +47,16 @@ const postSchema = new Schema<TPost>(
       type: [Schema.Types.ObjectId],
     },
     comments: {
-      type: [commentSchema]
-    }
+      type: [commentSchema],
+    },
+    status: {
+      type: String,
+      enum: ['active', 'blocked'],
+      default: 'active',
+    },
+    accessUser: {
+      type: [Schema.Types.ObjectId],
+    },
   },
   {
     timestamps: true,

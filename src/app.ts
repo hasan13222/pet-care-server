@@ -8,7 +8,7 @@ const app: Application = express();
 
 // cors middleware
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://bike-rental-frontend-eight.vercel.app'], 
+  origin: ['http://localhost:3000', 'https://pet-care-frontend-brown.vercel.app'], 
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello Biker! Welcome to the Biker Rental Service.');
+  res.send('Hello Pet Care! Welcome to the Pet Care Service.');
 });
 
 

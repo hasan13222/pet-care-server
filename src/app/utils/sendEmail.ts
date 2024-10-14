@@ -7,7 +7,7 @@ export const sendEmail = async (email: string, resetLink: string) => {
     secure: config.node_env === 'Production',
     auth: {
       user: 'jamil8305@gmail.com',
-      pass: ,
+      pass: config.smtp_password,
     },
   });
 

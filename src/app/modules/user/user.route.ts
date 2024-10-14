@@ -9,7 +9,10 @@ router.get('/', verifyToken('admin'), UserControllers.getAllUser);
 router.delete('/:userId', verifyToken('admin'), UserControllers.deleteUser);
 
 router.patch('/:id/promote', verifyToken('admin'), UserControllers.promoteUser());
+router.patch('/:id/follow', verifyToken(), UserControllers.followUser());
+router.patch('/:id/unfollow', verifyToken(), UserControllers.unfollowUser());
 router.get('/me', verifyToken(), UserControllers.getUser);
+router.get('/:userId', verifyToken(), UserControllers.getOtherUser);
 router.put(
   '/me',
   verifyToken(),

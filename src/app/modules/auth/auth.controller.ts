@@ -35,8 +35,11 @@ const forgetPassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.query.id as string;
-  const result = await AuthServices.setForgottenPasswordIntoDB(userId, req.body);
+  const useremail = req.user.email as string;
+  const result = await AuthServices.setForgottenPasswordIntoDB(
+    useremail,
+    req.body,
+  );
   sendResponse(res, {
     status: StatusCodes.OK,
     message: 'Password changed successfully',
@@ -50,7 +53,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
   res.cookie('token', token, {
     secure: config.node_env === 'Production',
     httpOnly: true,
-    sameSite: 'none',
+    sameSite: config.node_env === 'Production' ? 'none' : 'lax',
     maxAge: 90 * 24 * 60 * 60 * 1000,
   });
   sendAuthResponse(res, {
@@ -61,7 +64,6 @@ const login = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-
 const checkLogin = () => (req: Request, res: Response) => {
   sendResponse(res, {
     status: StatusCodes.OK,
@@ -71,12 +73,12 @@ const checkLogin = () => (req: Request, res: Response) => {
 };
 
 const logout = () => (req: Request, res: Response) => {
-  res.cookie('token', 'token', {
+  res.clearCookie('token', {
     secure: config.node_env === 'Production',
     httpOnly: true,
-    sameSite: 'none',
-    maxAge: 90 * 24 * 60 * 60 * 1000,
+    sameSite: config.node_env === 'Production' ? 'none' : 'lax',
   });
+  console.log("hit here")
   sendResponse(res, {
     status: StatusCodes.OK,
     message: 'User Logged out successfully',
@@ -91,5 +93,5 @@ export const AuthControllers = {
   logout,
   changePassword,
   forgetPassword,
-  resetPassword
+  resetPassword,
 };

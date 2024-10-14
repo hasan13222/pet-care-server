@@ -10,11 +10,13 @@ export type TPostComment = {
 }
 export interface TPost {
   user: Types.ObjectId;
-  description: string;
+  description?: string;
   image_attachments?: string[];
   type: TPostType;
   category: TPostCategory;
   upvote?: Types.ObjectId[];
   downvote?: Types.ObjectId[];
   comments?: TPostComment[];
+  status?: "active"|"blocked";
+  accessUser?: Types.ObjectId[];
 }
