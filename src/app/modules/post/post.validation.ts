@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 const createPostValidationSchema = z.object({
   body: z.object({
-    user: z.string(),
     description: z.string().optional(),
     image_attachments: z.array(z.string()).optional(),
     type: z.string().optional(),

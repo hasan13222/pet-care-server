@@ -107,10 +107,12 @@ const loginAuth = async (payload: TUserLoginDetails) => {
     email: user.email,
   };
 
-  const token = jwt.sign(jwtPayload, config.access_token_secret as string);
+  const token = jwt.sign(jwtPayload, config.access_token_secret as string, {expiresIn: config.access_token_expires_in});
+  const refreshToken = jwt.sign(jwtPayload, config.refresh_token_secret as string, {expiresIn: config.refresh_token_expires_in});
 
-  return { user, token };
+  return { user, token, refreshToken };
 };
+
 
 
 

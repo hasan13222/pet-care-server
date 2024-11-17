@@ -6,7 +6,8 @@ import { catchAsync } from '../../utils/catchAsync';
 
 const getUser = catchAsync(async (req: Request, res: Response) => {
   const result = await UserServices.getUserFromDB(req?.user?.email);
-  sendResponse(res, {
+  console.log("dfkdfkdfjdkfjdkfjdkfjdkfjkdjfkfk", result)
+  return sendResponse(res, {
     status: StatusCodes.OK,
     message: 'User Profile retrieved successfully',
     data: result,

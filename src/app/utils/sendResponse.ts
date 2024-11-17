@@ -26,6 +26,7 @@ export const sendAuthResponse = <T>(
   data: {
     status?: number;
     token: string;
+    refreshToken: string;
     success?: boolean;
     message?: string;
     data: T;
@@ -39,6 +40,7 @@ export const sendAuthResponse = <T>(
     statusCode: data.status,
     message: data.message,
     token: data.token,
+    refreshToken: data.refreshToken,
     data: data.data
   });
 };

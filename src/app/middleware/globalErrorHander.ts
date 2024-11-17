@@ -42,6 +42,8 @@ export const globalErrorHandler: ErrorRequestHandler = (
       statusCode = StatusCodes.BAD_REQUEST;
     }
 
+    console.log(err)
+
     return res.status(statusCode).json({
       success: false,
       message,

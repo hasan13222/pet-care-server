@@ -9,8 +9,8 @@ import config from '../../config';
 const stripeinstance = new stripe(config.stripe_secret as string);
 
 const createPost = catchAsync(async (req: Request, res: Response) => {
-  const result = await PostServices.createPostIntoDB(req.body);
-  sendResponse(res, {
+  const result = await PostServices.createPostIntoDB({...req.body, user: req.user._id});
+  return sendResponse(res, {
     status: StatusCodes.CREATED,
     message: 'Post Added successfully',
     data: result,
@@ -21,9 +21,9 @@ const createPost = catchAsync(async (req: Request, res: Response) => {
 const getMyPosts = catchAsync(async (req: Request, res: Response) => {
   const result = await PostServices.getMyPostFromDB(req.user._id);
   if (result.length === 0) {
-    sendResponse(res, {
+    return sendResponse(res, {
       success: false,
-      status: StatusCodes.NOT_FOUND,
+      status: StatusCodes.OK,
       message: 'No Data found',
       data: result,
     });
@@ -39,12 +39,13 @@ const getUserPosts = catchAsync(async (req: Request, res: Response) => {
   const userId = req.params.userId;
   const result = await PostServices.getUserPostFromDB(userId);
   if (result.length === 0) {
-    sendResponse(res, {
+    return sendResponse(res, {
       success: false,
       status: StatusCodes.NOT_FOUND,
       message: 'No Data found',
       data: result,
     });
+    
   }
   sendResponse(res, {
     status: StatusCodes.OK,
@@ -57,7 +58,7 @@ const getAllPosts = catchAsync(async (req: Request, res: Response) => {
   const limit = Number(req.query.limit);
   const result = await PostServices.getAllPostFromDB(limit);
   if (result.length === 0) {
-    sendResponse(res, {
+    return sendResponse(res, {
       success: false,
       status: StatusCodes.NOT_FOUND,
       message: 'No Data found',
