@@ -21,8 +21,8 @@ const stripe_1 = __importDefault(require("stripe"));
 const config_1 = __importDefault(require("../../config"));
 const stripeinstance = new stripe_1.default(config_1.default.stripe_secret);
 const createPost = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield post_service_1.PostServices.createPostIntoDB(req.body);
-    (0, sendResponse_1.sendResponse)(res, {
+    const result = yield post_service_1.PostServices.createPostIntoDB(Object.assign(Object.assign({}, req.body), { user: req.user._id }));
+    return (0, sendResponse_1.sendResponse)(res, {
         status: http_status_codes_1.StatusCodes.CREATED,
         message: 'Post Added successfully',
         data: result,
@@ -31,9 +31,9 @@ const createPost = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
 const getMyPosts = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield post_service_1.PostServices.getMyPostFromDB(req.user._id);
     if (result.length === 0) {
-        (0, sendResponse_1.sendResponse)(res, {
+        return (0, sendResponse_1.sendResponse)(res, {
             success: false,
-            status: http_status_codes_1.StatusCodes.NOT_FOUND,
+            status: http_status_codes_1.StatusCodes.OK,
             message: 'No Data found',
             data: result,
         });
@@ -48,7 +48,7 @@ const getUserPosts = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0
     const userId = req.params.userId;
     const result = yield post_service_1.PostServices.getUserPostFromDB(userId);
     if (result.length === 0) {
-        (0, sendResponse_1.sendResponse)(res, {
+        return (0, sendResponse_1.sendResponse)(res, {
             success: false,
             status: http_status_codes_1.StatusCodes.NOT_FOUND,
             message: 'No Data found',
@@ -65,7 +65,7 @@ const getAllPosts = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
     const limit = Number(req.query.limit);
     const result = yield post_service_1.PostServices.getAllPostFromDB(limit);
     if (result.length === 0) {
-        (0, sendResponse_1.sendResponse)(res, {
+        return (0, sendResponse_1.sendResponse)(res, {
             success: false,
             status: http_status_codes_1.StatusCodes.NOT_FOUND,
             message: 'No Data found',
@@ -143,6 +143,14 @@ const deletePost = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
         data: result,
     });
 }));
+const getPostsSummary = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield post_service_1.PostServices.getPostsSummaryFromDB();
+    (0, sendResponse_1.sendResponse)(res, {
+        status: http_status_codes_1.StatusCodes.OK,
+        message: 'Post Summary Retrieved successfully',
+        data: result,
+    });
+}));
 exports.PostControllers = {
     createPost,
     getAllPosts,
@@ -152,5 +160,6 @@ exports.PostControllers = {
     getMyPosts,
     interactPost,
     paymentForPremiumPost,
-    getUserPosts
+    getUserPosts,
+    getPostsSummary
 };

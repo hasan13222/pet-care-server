@@ -12,11 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
 const user_model_1 = require("../user/user.model");
 const getUserFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.findOne({ email: email }).select('+');
+    const result = yield user_model_1.User.findOne({ email: email }).select('+').populate({ path: 'following', select: 'name profile_picture _id' });
     return result;
 });
 const getOtherUserFromDB = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.findById(userId).select('+');
+    const result = yield user_model_1.User.findById(userId).select('+').populate({ path: 'following', select: 'name profile_picture _id' });
     return result;
 });
 const getAllUserFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,7 +30,7 @@ const updateUserIntoDB = (email, payload) => __awaiter(void 0, void 0, void 0, f
     return result;
 });
 const followUserIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.findByIdAndUpdate(id, { $push: payload }, { new: true });
+    const result = yield user_model_1.User.findByIdAndUpdate(id, { $addToSet: payload }, { new: true });
     return result;
 });
 const unfollowUserIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -45,6 +45,10 @@ const promoterUserToAdmin = (id) => __awaiter(void 0, void 0, void 0, function* 
     const result = yield user_model_1.User.findByIdAndUpdate(id, { role: 'admin' });
     return result;
 });
+const getUserFollowersFromDB = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.User.find({ following: { $in: [userId] } });
+    return result;
+});
 exports.UserServices = {
     getUserFromDB,
     updateUserIntoDB,
@@ -53,5 +57,6 @@ exports.UserServices = {
     promoterUserToAdmin,
     getOtherUserFromDB,
     followUserIntoDB,
-    unfollowUserIntoDB
+    unfollowUserIntoDB,
+    getUserFollowersFromDB
 };

@@ -18,4 +18,5 @@ router.get('/logout', auth_controller_1.AuthControllers.logout());
 router.post('/change-password', (0, auth_1.verifyToken)(), (0, validateRequest_1.validateRequest)(auth_validation_1.AuthValidations.changePasswordValidationSchema), auth_controller_1.AuthControllers.changePassword);
 router.post('/forget-password', (0, validateRequest_1.validateRequest)(auth_validation_1.AuthValidations.forgetPasswordValidationSchema), auth_controller_1.AuthControllers.forgetPassword);
 router.post('/reset-password', (0, auth_1.verifyToken)(), (0, validateRequest_1.validateRequest)(auth_validation_1.AuthValidations.resetPasswordValidationSchema), auth_controller_1.AuthControllers.resetPassword);
+router.post('/refresh-token', auth_controller_1.AuthControllers.refreshToken());
 exports.AuthRoutes = router;

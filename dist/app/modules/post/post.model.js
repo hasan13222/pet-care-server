@@ -16,6 +16,23 @@ const commentSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
+const replySchema = new mongoose_1.Schema({
+    userId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+    },
+    commentId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        required: true,
+    },
+    reply: {
+        type: String,
+        required: true,
+    },
+}, {
+    timestamps: true,
+});
 const postSchema = new mongoose_1.Schema({
     user: {
         required: true,
@@ -45,6 +62,9 @@ const postSchema = new mongoose_1.Schema({
     },
     comments: {
         type: [commentSchema],
+    },
+    replies: {
+        type: [replySchema],
     },
     status: {
         type: String,

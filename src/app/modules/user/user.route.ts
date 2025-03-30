@@ -5,7 +5,7 @@ import { validateRequest } from '../../middleware/validateRequest';
 import { UserValidations } from './user.validation';
 const router = express.Router();
 
-router.get('/', verifyToken('admin'), UserControllers.getAllUser);
+router.get('/', UserControllers.getAllUser);
 router.delete('/:userId', verifyToken('admin'), UserControllers.deleteUser);
 
 router.patch('/:id/promote', verifyToken('admin'), UserControllers.promoteUser());
@@ -19,5 +19,6 @@ router.put(
   validateRequest(UserValidations.updateUserValidationSchema),
   UserControllers.updateUser,
 );
+router.get('/followers/:userId', UserControllers.getUserFollowers)
 
 export const UserRoutes = router;

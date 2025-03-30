@@ -43,9 +43,19 @@ const getAllPostFromDB = (limit) => __awaiter(void 0, void 0, void 0, function* 
         path: 'comments.userId',
         model: 'User',
     })
+        .populate({
+        path: 'replies.userId',
+        model: 'User',
+    })
         .sort('-createdAt')
         .limit(limit);
     return result;
+});
+const getPostsSummaryFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const posts = yield post_model_1.Post.estimatedDocumentCount();
+    const premiumPosts = yield post_model_1.Post.countDocuments({ type: "premium" });
+    const tips = yield post_model_1.Post.countDocuments({ category: "tip" });
+    return { posts, premiumPosts, tips };
 });
 // const getSingleFromDB = async (id: string) => {
 //   const result = await Post.findById(id);
@@ -56,7 +66,7 @@ const updatePostIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, func
     return result;
 });
 const interactPostIntoDB = (id, payload, queryObj) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c, _d;
     if ((queryObj === null || queryObj === void 0 ? void 0 : queryObj.upvoted) === 'true') {
         yield post_model_1.Post.findByIdAndUpdate(id, { $pull: { upvote: payload.downvote } }, { new: true });
     }
@@ -64,11 +74,20 @@ const interactPostIntoDB = (id, payload, queryObj) => __awaiter(void 0, void 0, 
         yield post_model_1.Post.findByIdAndUpdate(id, { $pull: { downvote: payload.upvote } }, { new: true });
     }
     if ((queryObj === null || queryObj === void 0 ? void 0 : queryObj.updateComment) === 'edit') {
-        yield post_model_1.Post.findByIdAndUpdate(id, { $pull: { comments: { userId: (_a = payload.comments) === null || _a === void 0 ? void 0 : _a.userId } } }, { new: true });
+        yield post_model_1.Post.findByIdAndUpdate(id, { $pull: { comments: { _id: (_a = payload.comments) === null || _a === void 0 ? void 0 : _a._id } } }, { new: true });
+        delete payload.comments._id;
     }
     if ((queryObj === null || queryObj === void 0 ? void 0 : queryObj.updateComment) === 'delete') {
         const deletedCommnetPost = yield post_model_1.Post.findByIdAndUpdate(id, { $pull: { comments: { _id: (_b = payload.comments) === null || _b === void 0 ? void 0 : _b._id } } }, { new: true });
         return deletedCommnetPost;
+    }
+    if ((queryObj === null || queryObj === void 0 ? void 0 : queryObj.updateReply) === 'edit') {
+        yield post_model_1.Post.findByIdAndUpdate(id, { $pull: { replies: { _id: (_c = payload.replies) === null || _c === void 0 ? void 0 : _c._id } } }, { new: true });
+        delete payload.replies._id;
+    }
+    if ((queryObj === null || queryObj === void 0 ? void 0 : queryObj.updateReply) === 'delete') {
+        const deletedReplyPost = yield post_model_1.Post.findByIdAndUpdate(id, { $pull: { replies: { _id: (_d = payload.replies) === null || _d === void 0 ? void 0 : _d._id } } }, { new: true });
+        return deletedReplyPost;
     }
     if ('_id' in payload) {
         delete payload._id;
@@ -93,5 +112,6 @@ exports.PostServices = {
     getMyPostFromDB,
     interactPostIntoDB,
     accessUserForPremiumPostIntoDB,
-    getUserPostFromDB
+    getUserPostFromDB,
+    getPostsSummaryFromDB
 };

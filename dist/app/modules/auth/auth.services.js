@@ -85,8 +85,9 @@ const loginAuth = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         role: user.role,
         email: user.email,
     };
-    const token = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.access_token_secret);
-    return { user, token };
+    const token = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.access_token_secret, { expiresIn: config_1.default.access_token_expires_in });
+    const refreshToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.refresh_token_secret, { expiresIn: config_1.default.refresh_token_expires_in });
+    return { user, token, refreshToken };
 });
 exports.AuthServices = {
     createUserIntoDB,

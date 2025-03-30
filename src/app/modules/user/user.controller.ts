@@ -6,7 +6,6 @@ import { catchAsync } from '../../utils/catchAsync';
 
 const getUser = catchAsync(async (req: Request, res: Response) => {
   const result = await UserServices.getUserFromDB(req?.user?.email);
-  console.log("dfkdfkdfjdkfjdkfjdkfjdkfjkdjfkfk", result)
   return sendResponse(res, {
     status: StatusCodes.OK,
     message: 'User Profile retrieved successfully',
@@ -85,6 +84,15 @@ const followUser = () =>
     });
   });
 
+  const getUserFollowers = catchAsync(async (req: Request, res: Response) => {
+    const result = await UserServices.getUserFollowersFromDB(req.params.userId);
+    return sendResponse(res, {
+      status: StatusCodes.OK,
+      message: 'User Followers retrieved successfully',
+      data: result,
+    });
+  });
+
 export const UserControllers = {
   getUser,
   updateUser,
@@ -93,5 +101,6 @@ export const UserControllers = {
   promoteUser,
   getOtherUser,
   followUser,
-  unfollowUser
+  unfollowUser,
+  getUserFollowers
 };

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TPost, TPostComment } from './post.interface';
+import { TPost, TPostComment, TPostReply } from './post.interface';
 import { POST_CATEGORY, POST_TYPE } from './post.consts';
 
 const commentSchema = new Schema<TPostComment>(
@@ -18,6 +18,28 @@ const commentSchema = new Schema<TPostComment>(
     timestamps: true,
   },
 );
+
+const replySchema = new Schema<TPostReply>(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+    commentId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+    reply: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
 const postSchema = new Schema<TPost>(
   {
     user: {
@@ -48,6 +70,9 @@ const postSchema = new Schema<TPost>(
     },
     comments: {
       type: [commentSchema],
+    },
+    replies: {
+      type: [replySchema],
     },
     status: {
       type: String,

@@ -18,4 +18,5 @@ router.patch('/:id', (0, auth_1.verifyToken)(), (0, validateRequest_1.validateRe
 router.patch('/:id/interact', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.interactPost);
 router.patch('/:id/payment', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.paymentForPremiumPost);
 router.delete('/:id', (0, auth_1.verifyToken)(), post_controller_1.PostControllers.deletePost);
+router.get('/summary/total', post_controller_1.PostControllers.getPostsSummary);
 exports.PostRoutes = router;

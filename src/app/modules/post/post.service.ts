@@ -37,10 +37,21 @@ const getAllPostFromDB = async (limit: number) => {
       path: 'comments.userId',
       model: 'User',
     })
+    .populate({
+      path: 'replies.userId',
+      model: 'User',
+    })
     .sort('-createdAt')
     .limit(limit);
   return result;
 };
+
+const getPostsSummaryFromDB = async () => {
+  const posts = await Post.estimatedDocumentCount();
+  const premiumPosts = await Post.countDocuments({type: "premium"});
+  const tips = await Post.countDocuments({category: "tip"});
+  return {posts, premiumPosts, tips}
+}
 
 // const getSingleFromDB = async (id: string) => {
 //   const result = await Post.findById(id);
@@ -70,9 +81,10 @@ const interactPostIntoDB = async (id: string, payload: any, queryObj: any) => {
   if (queryObj?.updateComment === 'edit') {
     await Post.findByIdAndUpdate(
       id,
-      { $pull: { comments: { userId: payload.comments?.userId } } },
+      { $pull: { comments: { _id: payload.comments?._id } } },
       { new: true },
     );
+    delete payload.comments._id;
   }
   if (queryObj?.updateComment === 'delete') {
     const deletedCommnetPost = await Post.findByIdAndUpdate(
@@ -82,6 +94,22 @@ const interactPostIntoDB = async (id: string, payload: any, queryObj: any) => {
     );
     return deletedCommnetPost;
   }
+  if (queryObj?.updateReply === 'edit') {
+    await Post.findByIdAndUpdate(
+      id,
+      { $pull: { replies: { _id: payload.replies?._id } } },
+      { new: true },
+    );
+    delete payload.replies._id;
+  }
+  if (queryObj?.updateReply === 'delete') {
+    const deletedReplyPost = await Post.findByIdAndUpdate(
+      id,
+      { $pull: { replies: { _id: payload.replies?._id } } },
+      { new: true },
+    );
+    return deletedReplyPost;
+  }
   if ('_id' in payload) {
     delete payload._id;
   }
@@ -90,6 +118,7 @@ const interactPostIntoDB = async (id: string, payload: any, queryObj: any) => {
     { $push: payload },
     { new: true },
   );
+  
   return result;
 };
 
@@ -119,5 +148,6 @@ export const PostServices = {
   getMyPostFromDB,
   interactPostIntoDB,
   accessUserForPremiumPostIntoDB,
-  getUserPostFromDB
+  getUserPostFromDB,
+  getPostsSummaryFromDB
 };

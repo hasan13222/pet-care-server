@@ -33,7 +33,8 @@ const userSchema = new mongoose_1.Schema({
         default: 'user',
     },
     following: {
-        type: [mongoose_1.Schema.Types.ObjectId]
+        type: [mongoose_1.Schema.Types.ObjectId],
+        ref: 'User'
     }
 }, {
     timestamps: true,

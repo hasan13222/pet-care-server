@@ -147,6 +147,15 @@ const deletePost = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getPostsSummary = catchAsync(async (req: Request, res: Response) => {
+  const result = await PostServices.getPostsSummaryFromDB();
+  sendResponse(res, {
+    status: StatusCodes.OK,
+    message: 'Post Summary Retrieved successfully',
+    data: result,
+  });
+});
+
 export const PostControllers = {
   createPost,
   getAllPosts,
@@ -156,5 +165,6 @@ export const PostControllers = {
   getMyPosts, 
   interactPost,
   paymentForPremiumPost,
-  getUserPosts
+  getUserPosts,
+  getPostsSummary
 };

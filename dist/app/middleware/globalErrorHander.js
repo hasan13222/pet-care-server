@@ -35,6 +35,7 @@ const globalErrorHandler = (err, req, res, next) => {
             message = 'Invalid Id';
             statusCode = http_status_codes_1.StatusCodes.BAD_REQUEST;
         }
+        console.log(err);
         return res.status(statusCode).json({
             success: false,
             message,

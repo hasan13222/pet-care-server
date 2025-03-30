@@ -2,11 +2,11 @@ import { User } from '../user/user.model';
 import { TUser } from './user.interface';
 
 const getUserFromDB = async (email: string) => {
-  const result = await User.findOne({ email: email }).select('+');
+  const result = await User.findOne({ email: email }).select('+').populate({path: 'following', select: 'name profile_picture _id'});
   return result;
 };
 const getOtherUserFromDB = async (userId: string) => {
-  const result = await User.findById(userId).select('+');
+  const result = await User.findById(userId).select('+').populate({path: 'following', select: 'name profile_picture _id'});
   return result;
 };
 
@@ -31,7 +31,7 @@ const followUserIntoDB = async (
 ) => {
   const result = await User.findByIdAndUpdate(
     id,
-    { $push: payload },
+    { $addToSet: payload },
     { new: true },
   );
   return result;
@@ -53,8 +53,14 @@ const deleteUserFromDB = async (id: string) => {
   const result = await User.findByIdAndDelete(id);
   return result;
 };
+
 const promoterUserToAdmin = async (id: string) => {
   const result = await User.findByIdAndUpdate(id, { role: 'admin' });
+  return result;
+};
+
+const getUserFollowersFromDB = async (userId: string) => {
+  const result = await User.find({following: {$in: [userId]}})
   return result;
 };
 
@@ -66,5 +72,6 @@ export const UserServices = {
   promoterUserToAdmin,
   getOtherUserFromDB,
   followUserIntoDB,
-  unfollowUserIntoDB
+  unfollowUserIntoDB,
+  getUserFollowersFromDB
 };

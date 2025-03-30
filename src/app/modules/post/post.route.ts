@@ -13,5 +13,6 @@ router.patch('/:id', verifyToken(), validateRequest(PostValidations.updatePostVa
 router.patch('/:id/interact', verifyToken(), PostControllers.interactPost);
 router.patch('/:id/payment', verifyToken(), PostControllers.paymentForPremiumPost);
 router.delete('/:id', verifyToken(), PostControllers.deletePost);
+router.get('/summary/total', PostControllers.getPostsSummary);
 
 export const PostRoutes = router;
